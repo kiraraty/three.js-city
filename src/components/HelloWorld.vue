@@ -1,46 +1,54 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div ref="webgl">
+    <page-header></page-header>
+    <echarts></echarts>
+    
+    <fly-tag></fly-tag>
+    <flame-tag></flame-tag>
   </div>
 </template>
 
 <script>
+import { renderer } from "./threejs/RenderLoop.js";
+import PageHeader from "./PageHeader.vue"; //页面头部
+import echarts from "./echarts.vue"; //2D可视化图表
+
+import FlyTag from "./threejs/HTMLTag/FlyTag.vue"; //无人机标注的标签
+import FlameTag from "./threejs/HTMLTag/FlameTag.vue"; //火焰标注的标签
+
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
   props: {
-    msg: String
-  }
-}
+    // msg: String
+  },
+  components: {
+    PageHeader,
+    echarts,
+    FlyTag,
+    FlameTag,
+  },
+  created: function () {
+    // this.$refs.webgl.appendChild(renderer.domElement);//不可以
+    // Three.js渲染结果Canvas画布插入到body元素中
+    // document.body.appendChild(renderer.domElement);//可以访问body
+    // renderer.domElement.style.position = 'absolute';
+    // renderer.domElement.style.top = '0px';
+    // renderer.domElement.style.zIndex = '-1';//canvas全屏，不遮挡其它HTML元素
+  },
+  mounted: function () {
+    // this.$refs.webgl.appendChild(renderer.domElement);
+    // // Three.js渲染结果Canvas画布插入到body元素中
+    document.body.appendChild(renderer.domElement);
+    renderer.domElement.style.position = "absolute";
+    renderer.domElement.style.top = "0px";
+    renderer.domElement.style.zIndex = "-1"; //canvas全屏，不遮挡其它HTML元素
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
+/* h3 {
   margin: 40px 0 0;
 }
 ul {
@@ -53,5 +61,5 @@ li {
 }
 a {
   color: #42b983;
-}
+} */
 </style>
